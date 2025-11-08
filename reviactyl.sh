@@ -59,7 +59,7 @@ case "$1" in
         show_help
         ;;
     *)
-        echo "Unknown command: $1"
+        echo -e "${RED}Unknown command: ${RESET}$1"
         echo "Use: reviactyl help"
         exit 1
         ;;
