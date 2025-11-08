@@ -6,6 +6,8 @@ BASE_DIR="$(dirname "$(realpath "$0")")"
 PRE_DIR="$BASE_DIR/pre"
 SCRIPT_DIR="$BASE_DIR/scripts"
 
+source "$BASE_DIR/lib/core.sh"
+
 # Executed before all commands
 run_prerun() {
 
@@ -20,20 +22,21 @@ run_prerun() {
 
 # Help Panel
 show_help() {
+    echo ""
     if [ "$CLI_VERSION" != "canary" ]; then
-    echo "Reviactyl CLI v$CLI_VERSION"
+    echo -e "      ${CYAN}${BOLD}Reviactyl CLI v$CLI_VERSION ${RESET}"
     else
-    echo "Reviactyl CLI (Canary Release)"
+    echo -e "      ${CYAN}${BOLD}Reviactyl CLI (Canary Release) ${RESET}"
     fi
     echo ""
-    echo "Usage:"
-    echo "$ reviactyl install"
+    echo -e "${BOLD}${UNDERLINE}Usage:${RESET}"
+    echo -e "${GREEN}$ ${RESET}reviactyl install"
     echo "Install Latest version of Reviactyl panel"
     echo ""
-    echo "$ reviactyl upgrade"
+    echo -e "${GREEN}$ ${RESET}reviactyl upgrade"
     echo "Upgrade to Latest version of Reviactyl panel"
     echo ""
-    echo "$ reviactyl uninstall"
+    echo -e "${GREEN}$ ${RESET}reviactyl uninstall"
     echo "Remove existing installation of Reviactyl panel"
     echo ""
     exit 0
