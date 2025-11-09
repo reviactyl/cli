@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CLI_VERSION="canary"
+CLI_VERSION="2.0.0"
 
 BASE_DIR="$(dirname "$(realpath "$0")")"
 PRE_DIR="$BASE_DIR/pre"
