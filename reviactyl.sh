@@ -55,6 +55,9 @@ case "$1" in
         run_prerun
         bash "$SCRIPT_DIR/uninstall.sh"
         ;;
+    license)
+        bash "$SCRIPT_DIR/license.sh"
+        ;;
     ""|help|-h|--help)
         show_help
         ;;
