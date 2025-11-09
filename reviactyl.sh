@@ -11,6 +11,7 @@ source "$BASE_DIR/lib/core.sh"
 # Executed before all commands
 run_prerun() {
 
+    bash "$PRE_DIR/verify_license.sh" || exit 1
     bash "$PRE_DIR/verify_dependencies.sh" || exit 1
 
     if [ "$CLI_VERSION" != "canary" ]; then
