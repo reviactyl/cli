@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write # write is required to create releases and push.
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Create release branch and bump version
+        env:
+          REF: ${{ github.ref }}
+        run: |
+          REF_TAG=${GITHUB_REF#refs/tags/}      
+          VERSION=${REF_TAG#v}               
+
+          IFS='.-' read -r MAJOR MINOR PATCH TYPE <<< "$VERSION"
+
+          MAJOR=$(printf "%02d" "$MAJOR")
+          MINOR=$(printf "%02d" "$MINOR")
+          PATCH=$(printf "%02d" "$PATCH")
+
+          # Map prerelease type to number
+          case "$TYPE" in
+            alpha) TYPE_NUM=01 ;;
+            beta)  TYPE_NUM=02 ;;
+            rc)    TYPE_NUM=03 ;;
+            *)     TYPE_NUM=00 ;;  # stable
+          esac
+
+          sed -i "s/^CLI_VERSION=.*/CLI_VERSION=\"$VERSION\"/" reviactyl.sh
+
+          BRANCH="release/${REF_TAG}"
+          git config --local user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --local user.name 'Reviactyl CI'
+          git checkout -b "$BRANCH"
+          git add config/app.php
+          git commit -m "ci(release): bump version to ${VERSION} and build to ${BUILD}"
+          git push -u origin "$BRANCH"
+
+      - name: Create release archive
+        run: |
+          tar -czf cli.tar.gz *
+
+      - name: Fetch all tags
+        run: git fetch --tags
+
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: true
+          prerelease: ${{ contains(github.ref, 'rc') || contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
+          body_path: ./RELEASE_CHANGELOG
+          files: |
+            cli.tar.gz
