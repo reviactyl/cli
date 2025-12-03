@@ -40,6 +40,9 @@ show_help() {
     echo -e "${GREEN}$ ${RESET}reviactyl uninstall"
     echo "Remove existing installation of Reviactyl panel"
     echo ""
+    echo -e "${GREEN}$ ${RESET}reviactyl license [--update]"
+    echo "View/update your cli installation key."
+    echo ""
     exit 0
 }
 

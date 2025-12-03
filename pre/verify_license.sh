@@ -11,9 +11,9 @@ source "$BASE_DIR/lib/core.sh"
 validate_license() {
     local KEY="$1"
 
-    RESPONSE=$(curl -s -X POST "$API_URL" \
+    RESPONSE=$(curl -s --fail -X POST "$API_URL" \
         -H 'Content-Type: application/json' \
-        -d "{\"key\":\"$KEY\"}")
+        -d "{\"key\":\"$KEY\"}") || return 1
 
     VALID=$(echo "$RESPONSE" | grep -o '"valid":[ ]*true')
 
@@ -30,7 +30,7 @@ if [ ! -f "$LICENSE_FILE" ]; then
     exit 0
 fi
 
-KEY=$(cat "$LICENSE_FILE")
+KEY=$(cat "$LICENSE_FILE" | tr -d '[:space:]')
 
 echo -e "$INFO Connecting to auth.reviactyl.dev..."
 
