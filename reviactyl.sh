@@ -11,6 +11,7 @@ source "$BASE_DIR/lib/core.sh"
 # Executed before all commands
 run_prerun() {
 
+    bash "$PRE_DIR/verify_license.sh" || exit 1
     bash "$PRE_DIR/verify_dependencies.sh" || exit 1
 
     if [ "$CLI_VERSION" != "canary" ]; then
@@ -54,6 +55,9 @@ case "$1" in
     uninstall)
         run_prerun
         bash "$SCRIPT_DIR/uninstall.sh"
+        ;;
+    license)
+        bash "$SCRIPT_DIR/license.sh"
         ;;
     ""|help|-h|--help)
         show_help
