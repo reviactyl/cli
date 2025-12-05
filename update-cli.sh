@@ -26,6 +26,7 @@ run_cmd() {
     fi
 }
 
+run_cmd "sudo cp -rf $CLI_DIR/.rcyl2 /tmp/.rcyl2" "Getting Ready for Installation...."
 run_cmd "sudo rm -rf $CLI_DIR" "Removing existing installation..."
 
 if [ ! -d "$CLI_DIR" ]; then
@@ -46,6 +47,7 @@ if [ -L "$SYMLINK" ] || [ -f "$SYMLINK" ]; then
 fi
 
 run_cmd "sudo ln -s $CLI_DIR/reviactyl.sh $SYMLINK" "Creating global command 'reviactyl'"
+run_cmd "sudo mv /tmp/.rcyl2 $CLI_DIR/.rcyl2" "Copying License data...."
 
 echo "[SUCCESS] Reviactyl CLI upgraded successfully!"
 echo "You can now run: reviactyl"
