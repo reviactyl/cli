@@ -11,7 +11,6 @@ source "$BASE_DIR/lib/core.sh"
 # Executed before all commands
 run_prerun() {
 
-    bash "$PRE_DIR/verify_license.sh" || exit 1
     bash "$PRE_DIR/verify_dependencies.sh" || exit 1
 
     if [ "$CLI_VERSION" != "canary" ]; then
@@ -40,9 +39,6 @@ show_help() {
     echo -e "${GREEN}$ ${RESET}reviactyl uninstall"
     echo "Remove existing installation of Reviactyl panel"
     echo ""
-    echo -e "${GREEN}$ ${RESET}reviactyl license [--update]"
-    echo "View/update your cli installation key."
-    echo ""
     exit 0
 }
 
@@ -58,9 +54,6 @@ case "$1" in
     uninstall)
         run_prerun
         bash "$SCRIPT_DIR/uninstall.sh"
-        ;;
-    license)
-        bash "$SCRIPT_DIR/license.sh"
         ;;
     ""|help|-h|--help)
         show_help
